@@ -2,6 +2,7 @@
 
 <pre>
 Generates a real-time measure of multi-core performance.
+Written in Racket by Dexter Santucci
 Translated from Mike Pall's Lua version.
 Parallelized by Sam Tobin-Hochstadt.
 http://benchmarksgame.alioth.debian.org/
