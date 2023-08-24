@@ -1,6 +1,6 @@
 #lang racket/base
 
-(define version "1.3")
+(define version "1.4")
 
 ; Spectral-norm Benchmark - Generates a real-time measure of multi-core performance.
 ; by Dexter Santucci
@@ -9,10 +9,11 @@
 ; http://benchmarksgame.alioth.debian.org/
 ;
 ; Version history :
-; v1.0 - initial release
-; v1.1 - added burn-in mode
-; v1.2 - compiled with Racket 7.1
-; v1.3 - added support for hyper-threading
+; v1.4 - fixed core and hyper-threading count, updated compiler to Racket 8.10.
+; v1.3 - added support for hyper-threading.
+; v1.2 - compiled with Racket 7.1.
+; v1.1 - added burn-in mode.
+; v1.0 - initial release.
 
 ;;; defs
 (require racket/future racket/require (for-syntax racket/base)
@@ -132,16 +133,16 @@
 (pause)
 
 (displayln "Running single-thread test...")
-(test-batch 50 1)
+(test-batch 10 1)
 (display "Average: ") (displayln (average results))
 (set! results null) ; reset results
 
-(displayln "\nRunning multi-threaded test (using all cores)...")
-(test-batch 50 (processor-count))
+(displayln "\nRunning multi-core test (using all cores)...")
+(test-batch 10 (/ (processor-count) 2))
 (display "Average: ") (displayln (average results))
 
 (displayln "\nRunning hyper-threaded test (using all cores * 2)...")
-(test-batch 50 (* 2 (processor-count)))
+(test-batch 10 (processor-count))
 (display "Average: ") (displayln (average results))
 
 (displayln "\nReady to run in burn-in mode for 50,000 iterations.")
@@ -150,3 +151,6 @@
 (displayln "\nRunning multi-threaded test (using all cores)...")
 (test-batch 50000 (processor-count))
 (display "Average: ") (displayln (average results))
+
+
+; EOF
